@@ -5,13 +5,15 @@ const userRoute = require("./routes/useroute");
 const authRoute = require("./routes/auth");
 const challangeRoute = require("./routes/challanges");
 const categoryRoute = require("./routes/category");
-const hotchallange = require("./routes/hotchallange")
+const hotchallange = require("./routes/hotchallange");
 const { connectDB } = require("./utils/db");
+const cors = require("cors");
 
 //Basic setup
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 //Database connection
 connectDB();
@@ -41,7 +43,6 @@ app.use((error, req, res, next) => {
     message: errorMessage,
   });
 });
-
 
 app.listen(PORT, () => {
   console.log(`App is running on port http://localhost:${PORT}`.gray.bold);
