@@ -5,6 +5,7 @@ const userRoute = require("./routes/useroute");
 const authRoute = require("./routes/auth");
 const challangeRoute = require("./routes/challanges");
 const categoryRoute = require("./routes/category");
+const hotchallange = require("./routes/hotchallange")
 const { connectDB } = require("./utils/db");
 
 //Basic setup
@@ -27,6 +28,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/challange", challangeRoute);
 app.use("/api/v1/category", categoryRoute);
+app.use("/api/v1/hotchallange", hotchallange);
 
 //Error Handling
 app.use((error, req, res, next) => {

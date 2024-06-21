@@ -50,10 +50,12 @@ exports.getDailyUpdatesByChallenge = async (req, res, next) => {
       return next(createError(404, 'Challenge not found'));
     }
 
+    
     // Fetch daily updates for the challenge
     const dailyUpdates = await DailyUpdate.find({ challenge_id });
+    const comments = await Comments.find({daily_update_id : challenge_id })
 
-    res.status(200).json({ dailyUpdates });
+    res.status(200).json({ dailyUpdates , comments });
   } catch (error) {
     console.log(error);
     next(createError(400, error));

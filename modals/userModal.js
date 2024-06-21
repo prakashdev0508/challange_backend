@@ -23,6 +23,8 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     prefered_categories: { type: [String], default: [] },
+    follower: { type: [Object], default: [] },
+    following: { type: [Object], default: [] },
   },
   { timestamps: true }
 );
