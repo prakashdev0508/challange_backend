@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
         return validator.isEmail(value);
       },
     },
-    password: { type: String, required: true },
+    password: { type: String },
     account_type: {
       type: String,
       enum: ["public", "private"],
