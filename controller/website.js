@@ -3,9 +3,10 @@ const User = require("../modals/userModal");
 const Comments = require("../modals/commentsModal");
 const DailyUpdate = require("../modals/dailyUpdateModal");
 const { createError } = require("../utils/responses");
+
 exports.websiteHomePage = async (req, res, next) => {
   try {
-    const { search, page = 1, limit = 10 } = req.query;
+    const { search, page = 1, limit = 10, sortBy = 'upvotes', sortOrder = 'desc' } = req.query;
 
     const query = {};
 
@@ -16,7 +17,13 @@ exports.websiteHomePage = async (req, res, next) => {
       ];
     }
 
+    const sortOptions = {};
+    if (sortBy === 'upvotes') {
+      sortOptions.upvotes_count = sortOrder === 'desc' ? -1 : 1;
+    }
+
     const challenges = await Challenge.find(query)
+      .sort(sortOptions)
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
 
