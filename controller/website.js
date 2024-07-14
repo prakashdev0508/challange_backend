@@ -6,20 +6,26 @@ const { createError } = require("../utils/responses");
 
 exports.websiteHomePage = async (req, res, next) => {
   try {
-    const { search, page = 1, limit = 10, sortBy = 'upvotes', sortOrder = 'desc' } = req.query;
+    const {
+      search,
+      page = 1,
+      limit = 10,
+      sortBy = "upvotes",
+      sortOrder = "desc",
+    } = req.query;
 
     const query = {};
 
     if (search) {
       query.$or = [
         { challenge_name: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } }
+        { description: { $regex: search, $options: "i" } },
       ];
     }
 
     const sortOptions = {};
-    if (sortBy === 'upvotes') {
-      sortOptions.upvotes_count = sortOrder === 'desc' ? -1 : 1;
+    if (sortBy === "upvotes") {
+      sortOptions.upvotes_count = sortOrder === "desc" ? -1 : 1;
     }
 
     const challenges = await Challenge.find(query)
@@ -40,9 +46,11 @@ exports.websiteHomePage = async (req, res, next) => {
     );
 
     res.status(200).json({
-      totalPages: Math.ceil(totalChallenges / limit),
-      currentPage: parseInt(page),
-      challenges: challengesWithUserData,
+      topChallange: {
+        totalPages: Math.ceil(totalChallenges / limit),
+        currentPage: parseInt(page),
+        challenges: challengesWithUserData,
+      },
     });
   } catch (error) {
     console.log(error);
