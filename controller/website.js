@@ -53,12 +53,23 @@ exports.websiteHomePage = async (req, res, next) => {
       })
     );
 
+    const topUsers = await User.find()
+      .sort({ follower: -1 })
+      .limit(10) // Adjust the limit as needed
+      .select("username _id follower following account_type");
+
     res.status(200).json({
       topChallange: {
         totalPages: Math.ceil(totalChallenges / limit),
         currentPage: parseInt(page),
         challenges: challengesWithUserData,
       },
+      topUsers: topUsers.map((user) => ({
+        userName: user.username,
+        followerCount: user.follower.length,
+        followingCount: user.following.length,
+        account_type: user.account_type,
+      })),
     });
   } catch (error) {
     console.log(error);
