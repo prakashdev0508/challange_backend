@@ -2,6 +2,7 @@ const Challenge = require("../modals/challangeModal");
 const User = require("../modals/userModal");
 const Comments = require("../modals/commentsModal");
 const DailyUpdate = require("../modals/dailyUpdateModal");
+const Category = require("../modals/categoryModal");
 const { createError } = require("../utils/responses");
 
 exports.websiteHomePage = async (req, res, next) => {
@@ -38,9 +39,16 @@ exports.websiteHomePage = async (req, res, next) => {
     const challengesWithUserData = await Promise.all(
       challenges.map(async (challenge) => {
         const user = await User.findById(challenge.userId, "username _id");
+        const challengeCategory = await Category.findById(
+          challenge.challange_category,
+          "label"
+        );
         return {
           ...challenge.toObject(),
           user: user ? { username: user.username, _id: user._id } : null,
+          category: challengeCategory
+            ? { category_name: challengeCategory.label }
+            : null,
         };
       })
     );
